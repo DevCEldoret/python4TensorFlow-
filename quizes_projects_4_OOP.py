@@ -642,3 +642,457 @@ elevator.down()
 elevator.current #should output 0
 elevator.go_to(10) 
 elevator.current #should output 10
+
+
+#INHERITANCE
+#This allows us to reuse our code base:
+#Inherits behavior from the root parent for all the siblings
+class Cars:
+    def __init__(self,max_speed, model):
+        self.speed = max_speed
+        self.model = model
+
+#create an instance of Zubaru class
+class Zubaru(Cars):
+    pass
+class Bmw(Cars):
+    pass
+
+zubaru_squad = Zubaru("200km/h", "Zubaru impreza")
+bima_squad = Bmw("400km/hr", "BMW X6")
+print(zubaru_squad.speed)
+print(bima_squad.model)
+
+
+#Example 2
+class Animal:
+    sound=""
+    def __init__(self,name):
+        self.name = name
+    def speak(self):
+        print("{sound} I'm {name}! {sound}".format(name = self.name, sound=self.sound))
+class Piglet(Animal):
+    sound = "Oink"
+hamlet=Piglet("Hamlet")
+print(hamlet.speak())
+class Dog(Animal):
+    sound = "Wouuuuuuh"
+barking  = Dog("Simba")
+print(barking.speak())
+
+
+# Q 8
+#Let’s create a new class together and inherit from it. Below we have a base class called Clothing. Together,
+#let’s create a second class, called Shirt, that inherits methods from the Clothing class. Fill in the blanks to make it work properly.
+class Clothing:
+      material = ""
+  def __init__(self,name):
+    self.name = name
+  def checkmaterial(self):
+	  print("This {} is made of {}".format(self.___,self.___))
+			
+class Shirt(___):
+  material="Cotton"
+
+
+polo = Shirt("Polo")
+polo.checkmaterial()
+
+
+#soln
+class Clothing:
+    material = ""
+
+
+    def __init__(self, name):
+        self.name = name
+
+
+    def checkmaterial(self):
+        print("This {} is made of {}".format(self.name, self.material))
+
+
+class Shirt(Clothing):
+    material = "Cotton"
+
+
+polo = Shirt("Polo")
+print(polo.checkmaterial())
+
+
+
+
+#summary
+
+#In object-oriented programming, the concept of inheritance allows you to build relationships between objects,
+# grouping together similar concepts and reducing code duplication. Let's create a custom Fruit class with color and flavor attributes:
+>>> class Fruit:
+...     def __init__(self, color, flavor):
+...         self.color = color
+...         self.flavor = flavor
+
+
+#We defined a Fruit class with a constructor for color and flavor attributes. Next, we'll define an Apple class along with a new Grape 
+# class, both of which we want to inherit properties and behaviors from the Fruit class:
+>>> class Apple(Fruit):
+...     pass
+... 
+>>> class Grape(Fruit):
+...     pass
+
+# In Python, we use parentheses in the class declaration to have the class inherit from the Fruit class. So in this example,
+#  we’re instructing our computer that both the Apple class and Grape class inherit from the Fruit class. This means that they
+#  both have the same constructor method which sets the color and flavor attributes. We can now create instances of our Apple 
+# and Grape classes:
+
+>>> granny_smith = Apple("green", "tart")
+>>> carnelian = Grape("purple", "sweet")
+>>> print(granny_smith.flavor)
+tart
+>>> print(carnelian.color)
+purple
+
+
+
+# COMPOSITION:
+#Allows you to use an instances of a class where classes are not related to each other
+class Repository:
+    def __init__(self):
+        self.packages = {}
+    def add_packages(self, package):
+        self.packages[package.name]=package
+    def total_size(self):
+        result = 0
+        for package in self.packages.value():
+            result += package.size
+        return result
+
+
+# 9
+
+# Let’s expand a bit on our Clothing classes from the previous in-video question. Your mission: Finish the
+# "Stock_by_Material" method and iterate over the amount of each item of a given material that is in stock.
+#  When you’re finished, the script should add up to 10 cotton Polo shirts.
+class Clothing:
+      stock={ 'name': [],'material' :[], 'amount':[]}
+  def __init__(self,name):
+    material = ""
+    self.name = name
+  def add_item(self, name, material, amount):
+    Clothing.stock['name'].append(self.name)
+    Clothing.stock['material'].append(self.material)
+    Clothing.stock['amount'].append(amount)
+  def Stock_by_Material(self, material):
+    count=0
+    n=0
+    for item in Clothing.stock['___']:
+      if item == material:
+        count += Clothing.___['amount'][n]
+        n+=1
+    return count
+
+class shirt(Clothing):
+  material="Cotton"
+class pants(Clothing):
+  material="Cotton"
+
+polo = shirt("Polo")
+sweatpants = pants("Sweatpants")
+polo.add_item(polo.name, polo.material, 4)
+sweatpants.add_item(sweatpants.name, sweatpants.material, 6)
+current_stock = polo.Stock_by_Material("Cotton")
+print(current_stock)
+
+
+#soln
+class Clothing:
+      stock={ 'name': [],'material' :[], 'amount':[]}
+  def __init__(self,name):
+    material = ""
+    self.name = name
+  def add_item(self, name, material, amount):
+    Clothing.stock['name'].append(self.name)
+    Clothing.stock['material'].append(self.material)
+    Clothing.stock['amount'].append(amount)
+  def Stock_by_Material(self, material):
+    count=0
+    n=0
+    for item in Clothing.stock['material']:
+      if item == material:
+        count += Clothing.stock['amount'][n]
+        n+=1
+    return count
+
+class shirt(Clothing):
+  material="Cotton"
+class pants(Clothing):
+  material="Cotton"
+
+polo = shirt("Polo")
+sweatpants = pants("Sweatpants")
+polo.add_item(polo.name, polo.material, 4)
+sweatpants.add_item(sweatpants.name, sweatpants.material, 6)
+current_stock = polo.Stock_by_Material("Cotton")
+print(current_stock)
+
+
+# You can have a situation where two different classes are related, but there is no inheritance going on.
+#  This is referred to as composition -- where one class makes use of code contained in another class.
+# For example, imagine we have a Package class which represents a software package. It contains attributes
+#  about the software package, like name, version, and size. We also have a Repository class which represents
+# all the packages available for installation. While there’s no inheritance relationship between the two classes,
+# they are related. The Repository class will contain a dictionary or
+#  list of Packages that are contained in the repository. Let's take a look at an example Repository class definition:
+>>> class Repository:
+...      def __init__(self):
+...          self.packages = {}
+...      def add_package(self, package):
+...          self.packages[package.name] = package
+...      def total_size(self):
+...          result = 0
+...          for package in self.packages.values():
+...              result += package.size
+...          return result
+
+
+# UPNEXT ARE MODULES::
+# modules allow us to organize functions, methods,classes and any other data related together in a structured way.
+
+#EX 1:
+import random
+
+print(random.randint(1,5))
+print(random.randint(1,5))
+print(random.randint(1,5))
+
+2
+5
+4
+
+# EX 2
+# using datetime
+import datetime
+
+current_time = datetime.datetime.now()
+print(type(current_time))
+print(current_time)
+print(current_time.year)
+print(current_time.time())
+print(current_time + datetime.timedelta(days=30)) #prints after certain time scheduled
+#output
+
+<class 'datetime.datetime'>
+2020-08-21 18:12:51.615840
+2020
+18:12:51.615840
+2020-09-20 18:12:51.615840
+
+
+#final quiz combinations
+#Begin Portion 1
+
+#In this exercise, we'll create a few classes to simulate a server that's taking connections from
+# the outside and then a load balancer that ensures that there are enough servers to serve those connections.
+# To represent the servers that are taking care of the connections, we'll use a Server class. Each connection
+#  is represented by an id, that could, for example, be the IP address of the computer connecting to the server.
+# For our simulation, each connection creates a random amount of load in the server, between 1 and 10.
+# Run the following code that defines this Server class.
+
+import random
+
+class Server:
+    def __init__(self):
+        """Creates a new server instance, with no active connections."""
+        self.connections = {}
+
+    def add_connection(self, connection_id):
+        """Adds a new connection to this server."""
+        connection_load = random.random()*10+1
+        # Add the connection to the dictionary with the calculated load
+
+    def close_connection(self, connection_id):
+        """Closes a connection on this server."""
+        # Remove the connection from the dictionary
+
+    def load(self):
+        """Calculates the current load for all connections."""
+        total = 0
+        # Add up the load for each of the connections
+        return total
+
+    def __str__(self):
+        """Returns a string with the current load of the server"""
+        return "{:.2f}%".format(self.load())
+
+#End Portion 1#
+
+#create a server instance
+server = Server()
+server.add_connection("192.168.1.1")
+
+print(server.load())  # should give you a 0 meaning no connected server
+
+#close server connecition
+server.close_connection("192.168.1.1")
+print(server.load())
+
+
+
+
+
+
+# LOADSERVER
+class LoadBalancing:
+    	def __init__(self):
+		"""Initialize the load balancing system with one server"""
+		self.connections = {}
+		self.servers = [Server()]
+
+	def add_connection(self, connection_id):
+		"""Randomly selects a server and adds a connection to it."""
+		server = random.choice(self.servers)
+		self.connection_id = connection_id
+		# Add the connection to the dictionary with the selected server
+		self.connections[self.connection_id]=server
+		print (server.load())
+		# Add the connection to the server
+		Server.add_connection(server)
+
+	def close_connection(self, connection_id):
+		"""Closes the connection on the the server corresponding to connection_id."""
+		# Find out the right server
+		server = self.connections[connection_id]
+		# Close the connection on the server
+		Server.close_connection(server)
+		# Remove the connection from the load balancer
+		del self.connections[connection_id]
+  
+  
+  #LOAD2
+  
+  class LoadBalancing:
+    	def __init__(self):
+		"""Initialize the load balancing system with one server"""
+		self.connections = {}
+		self.servers = [Server()]
+
+	def add_connection(self, connection_id):
+		"""Randomly selects a server and adds a connection to it."""
+		server = random.choice(self.servers)
+		self.connection_id = connection_id
+		# Add the connection to the dictionary with the selected server
+		self.connections[self.connection_id]=server
+		print (server.load())
+		# Add the connection to the server
+		server.add_connection(server)
+
+	def close_connection(self, connection_id):
+		"""Closes the connection on the the server corresponding to connection_id."""
+		# Find out the right server
+		server = self.connections[connection_id]
+		# Close the connection on the server
+		server.close_connection(server)
+		# Remove the connection from the load balancer
+		del self.connections[connection_id]
+
+	def avg_load(self):
+		"""Calculates the average load of all servers"""
+		# Sum the load of each server and divide by the amount of servers
+		total = 0
+		for connection in self.connections.values():
+			#for servs in self.connection.:
+			total += connection.load()
+		return total
+
+	def ensure_availability(self):
+		"""If the average load is higher than 50, spin up a new server"""
+		if avg_load(self) > 0.5:
+			print ("xxx")
+		pass
+
+	def __str__(self):
+		"""Returns a string with the load for each server."""
+		loads = [str(server) for server in self.servers]
+		return "[{}]".format(",".join(loads))
+#End Portion 2#
+
+
+# Alright, we now have a basic implementation of the server class. Let's look at the basic LoadBalancing class. 
+# This class will start with only one server available. When a connection gets added, it will randomly select a
+#  server to serve that connection, and then pass on the connection to the server.
+#  The LoadBalancing class also needs to keep track of the ongoing connections to be able to close them. This is the basic structure:
+#Begin Portion 2#
+class LoadBalancing:
+    def __init__(self):
+        """Initialize the load balancing system with one server"""
+        self.connections = {}
+        self.servers = [Server()]
+
+    def add_connection(self, connection_id):
+        """Randomly selects a server and adds a connection to it."""
+        server = random.choice(self.servers)
+        # Add the connection to the dictionary with the selected server
+        # Add the connection to the server
+        self.connections[connection_id] = server
+        server.add_connection(connection_id)
+        self.ensure_availability()
+
+    def close_connection(self, connection_id):
+        """Closes the connection on the the server corresponding to connection_id."""
+        # Find out the right server
+        # Close the connection on the server
+        # Remove the connection from the load balancer
+        self.connections[connection_id].close_connection(connection_id)
+        del self.connections[connection_id]
+
+    def avg_load(self):
+        """Calculates the average load of all servers"""
+        # Sum the load of each server and divide by the amount of servers
+        total = 0
+        for loads in self.servers:
+            total += loads.load()
+        return total/len(self.servers)
+
+    def ensure_availability(self):
+        """If the average load is higher than 50, spin up a new server"""
+        if self.avg_load() > 50.00:
+            self.servers.append(Server())
+
+    def __str__(self):
+        """Returns a string with the load for each server."""
+        loads = [str(server) for server in self.servers]
+        return "[{}]".format(",".join(loads))
+#End Portion 2#
+
+#Begin Portion 1#
+import random
+
+class Server:
+    def __init__(self):
+        """Creates a new server instance, with no active connections."""
+        self.connections = {}
+
+    def add_connection(self, connection_id):
+        """Adds a new connection to this server."""
+        connection_load = random.random()*10+1
+        self.connections[connection_id] = connection_load
+        # Add the connection to the dictionary with the calculated load
+
+    def close_connection(self, connection_id):
+        """Closes a connection on this server."""
+        # Remove the connection from the dictionary
+        del self.connections[connection_id]
+
+    def load(self):
+        """Calculates the current load for all connections."""
+        total = 0
+        # Add up the load for each of the connections
+        for load in self.connections.values():
+            total += load
+        return total
+
+    def __str__(self):
+        """Returns a string with the current load of the server"""
+        return "{:.2f}%".format(self.load())
+    
+# CONGRATULATIONS. Advanced python coming sooon
